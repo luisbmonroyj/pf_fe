@@ -82,6 +82,29 @@ export default{
     },
     
     methods:{
+        confirmar: function(){
+            return alert("intentando el pedido");
+           /* axios.post(
+                "https://pf-app-api.herokuapp.com/cart/",
+                productos,
+                {headers: {}}
+            )
+                .then((result) => {
+                    alert ("Pedido creado")
+                    /*let dataSignUp = {
+                        username: this.user.username,
+                        token_access: result.data.access,
+                        token_refresh: result.data.refresh,
+                    }
+                    
+                    this.$emit('completedSignUp', dataSignUp)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    alert("ERROR: Fallo en el pedido.");
+                });*/
+        
+        },
         pedir: async function(){
         //pedir: function(){
             if (localStorage.getItem("token_access") === null || localStorage.getItem("token_refresh")=== null){
@@ -95,8 +118,13 @@ export default{
                 {headers: {'Authorization': `Bearer ${token}`}})
             .then((result) => {
                 productos+='}],"id_usuario":'+ userId + '}';
+                //var obj = JSON.parse(productos);
                 alert(productos);
+                alert("Instaurando el pedido");
+                confirmar();
+
                 this.loaded = true;
+
                 /*
                 this.name = result.data.name;
                 this.email = result.data.email;
@@ -104,7 +132,7 @@ export default{
                 */
             })
             .catch(() => {
-                this.$emit('logOut');
+            //    this.$emit('logOut');
                 alert("no pude crear el pedido");
             });
 
