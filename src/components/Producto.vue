@@ -59,9 +59,7 @@ export default{
     name: "producto",
     
     data: function(){
-        
-        
-        jasonPedido.set(1,4)
+        //jasonPedido.set(1,4)
         console.log(jasonPedido.keys());
         console.log(jasonPedido.values());
         console.log(jasonPedido);
@@ -75,14 +73,33 @@ export default{
     },
     
     methods:{
+        agregar: function(){
+            let productos = "";
+            let contador = 0;
+            let inicio = '"productos_usuario" : [';
+            let abriendo = "{";
+            let otro = "},"
+            if(contador<1){
+                productos += inicio+abriendo+this.id_producto+":"+this.cantidad;
+                contador++;
+            }
+            else{
+                productos+=otro+abriendo+this.id_producto+":"+this.cantidad;
+                contador++;
+            }
+            alert(productos);
+            return;
+        },
         anterior: function(){
             if (this.id_producto > 1)
                 this.id_producto = this.id_producto-1;
             this.getData();
+            return;
         },
         siguiente: function(){
                 this.id_producto = this.id_producto+1;
             this.getData();
+            return;
         },
         getData: function(){
             //let id_producto = this.id_producto;//producto.dato;
