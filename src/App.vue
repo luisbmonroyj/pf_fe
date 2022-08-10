@@ -1,12 +1,12 @@
 <template>
   <div id="app" class="app">
     <div class="header">
-      <h1>IRONBANK</h1>
-      <h2>valar addemmatis</h2>
+      <h1>PAPAS FERSAN</h1>
+      <h2>Papas y Yucas congeladas para freir</h2>
       <nav>
-        <button v-if="!is_auth" v-on:click="loadLogIn">Iniciar Sesion</button>
+        <button v-if="!is_auth" v-on:click="loadProducto">Productos</button>
+        <button v-if="!is_auth" v-on:click="loadLogIn">Entrar</button>
         <button v-if="is_auth" v-on:click="loadHome">Inicio</button>
-        <button v-if="is_auth" v-on:click="loadAccount">Cuenta</button>
         <button v-if="is_auth" v-on:click="logOut">Cerrar Sesion</button>
         <button v-if="!is_auth" v-on:click="loadSignUp">Registrarse</button>
         <!--
@@ -80,8 +80,8 @@
         alert("Sesión cerrada");
         this.verifyAuth();
       },
-      loadAccount: function (){
-        this.$router.push({name:"account"});
+      loadProducto: function (){
+        this.$router.push({name:"producto"});
       }
     },
     created: function(){
@@ -95,13 +95,13 @@
     margin: 0 0 0 0;
   }
   .header{
-  margin: 0%;
-  padding: 0;
+  margin: 1% 0% 0% 0%;
+  padding: 100;
   width: 100%;
   height: 10vh;
   min-height: 100px;
-  background-color: #283747 ;
-  color:#E5E7E9 ;
+  background-color: #f5b000 ;
+  color:#2f3944 ;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -111,7 +111,7 @@
   text-align: center;
   }
   .header h2 {
-  width: 10%;
+  width: 30%;
   text-align: center;
   }
   .header nav {
@@ -119,10 +119,11 @@
   width: 20%;
   display: flex;
   justify-content: space-around;
-  align-items: center;
+  align-items: right;
   font-size: 20px;
   }
   .header nav button{
+  height: 100%;
   color: #E5E7E9;
   background: #283747;
   border: 1px solid #E5E7E9;
@@ -135,7 +136,7 @@
   border: 1px solid #E5E7E9;
   }
   .main-component{
-  height: 75vh;
+  height: 65vh;
   margin: 0%;
   padding: 0%;
   background: #FDFEFE;
@@ -143,16 +144,15 @@
   .footer{
   margin:0;
   padding:0;
-    width: 100%;
+  width: 100%;
   height: 10vh;
   min-height: 100px;
-  background-color: #283747;
-  color: #E5E7E9;
+  background-color: #f5b000 ;
+  color:#2f3944 ;
   }
   .footer h2{
   width: 100%;
   height: 100%;
-
   display: flex;
   justify-content: center;
   align-items: center;

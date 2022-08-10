@@ -1,69 +1,75 @@
 <template>
     <div class="signUp_user">
-        <div class = "container_signUp_user">
+        <div class="container_signUp_user">
             <h2>Crear una cuenta</h2>
-            <form v-on:submit.prevent="processSignUp">
-                <input type="text" v-model="user.username" placeholder="Nombre de Ususario">
+            <form v-on:submit.prevent="processSignUp" >
+                <input type="text" v-model="user.username" placeholder="Usuario">
                 <br>
                 <input type="password" v-model="user.password" placeholder="Contraseña">
                 <br>
-                <input type="text" v-model="user.name" placeholder="Nombre y apellido">
+                <input type="text" v-model="user.nombre" placeholder="Nombre">
                 <br>
-                <input type="email" v-model="user.email" placeholder="Email">
+                <input type="text" v-model="user.apellido" placeholder="Apellido">
                 <br>
-                <input type="number" v-model="user.account.balance" placeholder="Primer depósito">
+                <input type="email" v-model="user.email" placeholder="Correo electronico">
                 <br>
-                <button type="submit">ReJistrarse</button>
+                <input type="text" v-model="user.direccion" placeholder="Dirección">
+                <br>
+                <input type="text" v-model="user.telefono" placeholder="Teléfono">
+                <br>
+                <button type="submit">Registrarse</button>
             </form>
         </div>
-   </div>
+    </div>
 </template>
 <script>
 import axios from 'axios';
 
-export default{
+export default {
     name: "signUp",
-
+    
     data: function(){
         return {
-            user:{
-                username:"",
-                password:"",
-                name:"",
-                email:"",
-                account:{
-                    lastChangeDate: (new Date()).toJSON().toString(),
-                    balance:0,
-                    isActive:true
-                }
+            user: {
+                username: "",
+                password: "",
+                apellido: "",
+                nombre: "",
+                email: "",
+                telefono: "", 
+                direccion: "",                               
             }
         }
     },
-    methods:{
-    processSignUp: function(){
-        axios.post(
-            "https://bankbe-luis-app.herokuapp.com/createUser/",
-            this.user,
-            {headers:{}}
-        )
-        .then((result) => {
-            let dataSignUp = {
-                username: this.user.username,
-                token_access:result.data.access,
-                token_refresh: result.data.refresh,
-            }
-            this.$emit('completedSignUp',dataSignUp)
-        })
-        .catch((error) => {
-            console.log(error)
-            alert ("ERROR: Fallo en el registro");
-        });
+
+    methods: {
+        processSignUp: function(){
+            axios.post(
+                "https://pf-app-api.herokuapp.com/createUser/",
+                this.user,
+                {headers: {}}
+            )
+                .then((result) => {
+                    let dataSignUp = {
+                        username: this.user.username,
+                        token_access: result.data.access,
+                        token_refresh: result.data.refresh,
+                    }
+                    
+                    this.$emit('completedSignUp', dataSignUp)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    alert("ERROR: Fallo en el registro.");
+                });
+        }
     }
 }
-}
 </script>
+
 <style>
-.signUp_user{
+
+    .signUp_user{
         margin: 0;
         padding: 0%;
         height: 100%;
@@ -117,6 +123,5 @@ export default{
         background: crimson;
         border: 1px solid #283747;
     }
-    
-</style>
 
+</style>

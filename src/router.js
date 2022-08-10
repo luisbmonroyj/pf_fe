@@ -3,7 +3,7 @@ import App from './App.vue'
 import LogIn from './components/LogIn.vue'
 import SignUp from './components/SignUp.vue'
 import Home from './components/Home.vue'
-import Account from './components/Accounts.vue'
+import Producto from './components/Producto.vue'
 
 const routes = [
   {
@@ -27,9 +27,9 @@ const routes = [
     component: Home
   },
   {
-    path: '/user/account',
-    name: 'account',
-    component: Account
+    path: '/producto',
+    name: 'producto',
+    component: Producto
   }  
 ];
 const router = createRouter({
