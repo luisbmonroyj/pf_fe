@@ -62,6 +62,8 @@ let contador = 0;
 let inicio = '{"productos_usuario" : [';
 let abriendo = "{";
 let otro = "},\n";
+let productosMap = new Map();
+
 
 export default{
     name: "producto",
@@ -119,8 +121,9 @@ export default{
             .then((result) => {
                 productos+='}],"id_usuario":'+ userId + '}';
                 //var obj = JSON.parse(productos);
-                alert(productos);
-                alert("Instaurando el pedido");
+                
+
+                alert(productosMap);
                 confirmar();
 
                 this.loaded = true;
@@ -157,7 +160,16 @@ export default{
                 productos+=otro+abriendo+this.id_producto+":"+this.cantidad;
                 contador++;
             }
-            alert(productos);
+
+            productosMap.set(this.id_producto, this.cantidad);
+            let text = "";
+                
+                productosMap.forEach (function(value, key) {
+                text += key + ' = ' + value;
+                })
+                alert(text);
+
+            //alert(productos);
             return;
         },
         anterior: function(){
@@ -205,17 +217,7 @@ export default{
             });
 
         },
-        verifyToken: function(){
-            return axios.post("https://pf-app-api.herokuapp.com/refresh/",
-            {refresh: localStorage.getItem("token_refresh")},
-            {headers:{ }})
-            .then((result) => {
-                localStorage.setItem("token_access",result.data.access);
-            })
-            .catch(() => {
-                this.$emit('logOut');
-            });
-        }
+        
     },
     created: async function(){
         this.getData();
