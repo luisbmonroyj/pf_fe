@@ -4,7 +4,7 @@
       <h1>PAPAS FERSAN</h1>
       <h2>Papas y Yucas congeladas para freir</h2>
       <nav>
-        <button v-if="!is_auth" v-on:click="loadProducto">Productos</button>
+        <button v-on:click="loadProducto">Productos</button>
         <button v-if="!is_auth" v-on:click="loadLogIn">Entrar</button>
         <button v-if="is_auth" v-on:click="loadHome">Inicio</button>
         <button v-if="is_auth" v-on:click="logOut">Cerrar Sesion</button>

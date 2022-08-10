@@ -37,6 +37,9 @@
                 </td>
             </tr>
         </table>
+        <div class="Hacer pedido">
+                    <button v-on:click="pedir">HACER PEDIDO</button>
+        </div>
         <div>
             <!--
             <h2>Nombre: <span>{{nombre}}</span></h2>
@@ -52,9 +55,14 @@ import jwt_decode from "jwt-decode";
 import axios from 'axios';
 
 let jasonPedido = new Map();
-var abriendo = '"productos_usuario": [{';
+//var abriendo = '"productos_usuario": [{';
 //abriendo += jasonPedido.keys().to
-        
+let productos = "";
+let contador = 0;
+let inicio = '{"productos_usuario" : [';
+let abriendo = "{";
+let otro = "},\n";
+
 export default{
     name: "producto",
     
@@ -68,17 +76,51 @@ export default{
             Presentacion: "",
             precio: 0,
             loaded: false, //linea 2
-            id_producto: 1
+            id_producto: 1,
+            cantidad:1
         }
     },
     
     methods:{
+        pedir: async function(){
+        //pedir: function(){
+            if (localStorage.getItem("token_access") === null || localStorage.getItem("token_refresh")=== null){
+                this.$emit('logOut');
+                return;
+            }
+            await this.verifyToken();
+            let token = localStorage.getItem("token_access");
+            let userId = jwt_decode(token).id_usuario.toString();
+            axios.get(`https://pf-app-api.herokuapp.com/user/${userId}/`, 
+                {headers: {'Authorization': `Bearer ${token}`}})
+            .then((result) => {
+                productos+='}],"id_usuario":'+ userId + '}';
+                alert(productos);
+                this.loaded = true;
+                /*
+                this.name = result.data.name;
+                this.email = result.data.email;
+                this.balance = result.data.acount.balance;
+                */
+            })
+            .catch(() => {
+                this.$emit('logOut');
+                alert("no pude crear el pedido");
+            });
+
+        },
+        verifyToken: function(){
+            return axios.post("https://bankbe-luis-app.herokuapp.com/refresh/",
+            {refresh: localStorage.getItem("token_refresh")},
+            {headers:{ }})
+            .then((result) => {
+                localStorage.setItem("token_access",result.data.access);
+            })
+            .catch(() => {
+                this.$emit('logOut');
+            });
+        },
         agregar: function(){
-            let productos = "";
-            let contador = 0;
-            let inicio = '"productos_usuario" : [';
-            let abriendo = "{";
-            let otro = "},"
             if(contador<1){
                 productos += inicio+abriendo+this.id_producto+":"+this.cantidad;
                 contador++;
