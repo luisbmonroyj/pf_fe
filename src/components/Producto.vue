@@ -71,6 +71,8 @@ let contador = 0;
 let inicio = '{"productos_usuario" : [';
 let abriendo = "{";
 let otro = "},\n";
+let productosMap = new Map();
+
 
 export default{
     name: "producto",
@@ -91,7 +93,33 @@ export default{
     
     methods:{
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+        confirmar: function(){
+            return alert("intentando el pedido");
+           /* axios.post(
+                "https://pf-app-api.herokuapp.com/cart/",
+                productos,
+                {headers: {}}
+            )
+                .then((result) => {
+                    alert ("Pedido creado")
+                    /*let dataSignUp = {
+                        username: this.user.username,
+                        token_access: result.data.access,
+                        token_refresh: result.data.refresh,
+                    }
+                    
+                    this.$emit('completedSignUp', dataSignUp)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    alert("ERROR: Fallo en el pedido.");
+                });*/
+        
+        },
+>>>>>>> 4f7e798d2f266f942831a2b583b7f6e153a2b131
         pedir: async function(){
         //pedir: function(){
             if (localStorage.getItem("token_access") === null || localStorage.getItem("token_refresh")=== null){
@@ -105,8 +133,14 @@ export default{
                 {headers: {'Authorization': `Bearer ${token}`}})
             .then((result) => {
                 productos+='}],"id_usuario":'+ userId + '}';
-                alert(productos);
+                //var obj = JSON.parse(productos);
+                
+
+                alert(productosMap);
+                confirmar();
+
                 this.loaded = true;
+
                 /*
                 this.name = result.data.name;
                 this.email = result.data.email;
@@ -114,7 +148,7 @@ export default{
                 */
             })
             .catch(() => {
-                this.$emit('logOut');
+            //    this.$emit('logOut');
                 alert("no pude crear el pedido");
             });
 
@@ -139,7 +173,16 @@ export default{
                 productos+=otro+abriendo+this.id_producto+":"+this.cantidad;
                 contador++;
             }
-            alert(productos);
+
+            productosMap.set(this.id_producto, this.cantidad);
+            let text = "";
+                
+                productosMap.forEach (function(value, key) {
+                text += key + ' = ' + value;
+                })
+                alert(text);
+
+            //alert(productos);
             return;
         },
         anterior: function(){
@@ -210,17 +253,7 @@ export default{
                 //this.id_producto++;
             this.getData();
         },
-        verifyToken: function(){
-            return axios.post("https://pf-app-api.herokuapp.com/refresh/",
-            {refresh: localStorage.getItem("token_refresh")},
-            {headers:{ }})
-            .then((result) => {
-                localStorage.setItem("token_access",result.data.access);
-            })
-            .catch(() => {
-                this.$emit('logOut');
-            });
-        }
+        
     },
     created: async function(){
         this.getData();
