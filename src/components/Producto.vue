@@ -1,29 +1,21 @@
 <template>
     <div v-if="loaded" class="catalogo">
         <h1>Catalogo de Productos</h1>
-        <!--
-            <div>
-            <form v-on:submit.prevent="getData()">
-                <input type="number" v-model="producto.dato" placeholder="Codigo producto">
-                <br>
-                <button type="submit">Buscar</button>
-            </form>
-        </div>
-            -->
         <table>
             <tr>
                 <td class="anterior">
                     <button v-on:click="anterior">ANTERIOR</button>
                 </td>
+                
                 <td>
-                    <h2><span>Nombre: </span>{{nombre}}</h2>
-                    <h2><span>Presentacion </span>{{presentacion}}</h2>   
+                    <h2><span>Nombre: </span>{{nombre}} </h2>
+                    <h2><span>Presentacion </span>{{presentacion}} </h2>   
                     <h2><span>Precio: </span>{{precio}} COP </h2>   
                 </td>
+                
                 <td class="siguiente">
                     <button v-on:click="siguiente">SIGUIENTE</button>
                 </td>
-                     
             </tr>
             <tr>
                 <td>
@@ -37,13 +29,6 @@
                 </td>
             </tr>
         </table>
-        <div>
-            <!--
-            <h2>Nombre: <span>{{nombre}}</span></h2>
-            <h2>Presentacion <span>{{presentacion}}</span></h2>
-            <h2>Precio: <span>{{precio}} COP </span></h2>
-            -->
-        </div>
     </div>
 </template>
 
@@ -51,17 +36,23 @@
 import jwt_decode from "jwt-decode";
 import axios from 'axios';
 
-let jasonPedido = new Map();
-var abriendo = '"productos_usuario": [{';
+/*
+inicio+abriendo+id_producto+":"+cantidad
+si agrega otro elemento + siguiente
+cuando termine de escoger productos +cerrando
+
+let jasonPedido = "";
+var inicio = '"productos_usuario": [';
+var abriendo = "{"
 //abriendo += jasonPedido.keys().to
-        
+var cerrando="}]";
+var siguiente= "},"
+var contador = 0;
+*/
 export default{
     name: "producto",
-    
     data: function(){
-        
-        
-        jasonPedido.set(1,4)
+        //jasonPedido.set(1,4)
         console.log(jasonPedido.keys());
         console.log(jasonPedido.values());
         console.log(jasonPedido);
@@ -75,15 +66,6 @@ export default{
     },
     
     methods:{
-        anterior: function(){
-            if (this.id_producto > 1)
-                this.id_producto = this.id_producto-1;
-            this.getData();
-        },
-        siguiente: function(){
-                this.id_producto = this.id_producto+1;
-            this.getData();
-        },
         getData: function(){
             //let id_producto = this.id_producto;//producto.dato;
             /*
@@ -116,7 +98,29 @@ export default{
                 this.getData();
                 //this.$emit('logOut');
             });
-
+        },
+        /*
+        agregar: function(){
+            //alert(this.id_producto+" "+this.cantidad);
+            if (contador<1){//que es el primer elemento en el carrito
+                jasonPedido+=inicio+abriendo+this.id_producto+":"+this.cantidad    
+            }
+            else{
+                jasonPedido+=siguiente+abriendo+this.id_producto+":"+this.cantidad    
+            }
+            alert(jasonPedido);
+        },
+        */
+        anterior: function(){
+            if (this.id_producto > 1)
+                this.id_producto = this.id_producto-1;
+                //this.id_producto--;
+            this.getData();
+        },
+        siguiente: function(){
+                this.id_producto = this.id_producto+1;
+                //this.id_producto++;
+            this.getData();
         },
         verifyToken: function(){
             return axios.post("https://pf-app-api.herokuapp.com/refresh/",
