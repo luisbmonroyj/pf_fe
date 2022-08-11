@@ -132,7 +132,6 @@
   background: #283747;
   border: 1px solid #E5E7E9;
   border-radius: 5px;
-  padding: 100px 200px 300px 400px;
   }
   .header nav button:hover{
   color: #283747;
