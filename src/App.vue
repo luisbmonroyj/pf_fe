@@ -6,6 +6,7 @@
       <nav>
         <button v-on:click="loadProducto">Productos</button>
         <button v-if="!is_auth" v-on:click="loadLogIn">Entrar</button>
+        <button v-if="is_auth" v-on:click="loadPedidos">Pedidos</button>
         <button v-if="is_auth" v-on:click="loadHome">Inicio</button>
         <button v-if="is_auth" v-on:click="logOut">Cerrar Sesion</button>
         <button v-if="!is_auth" v-on:click="loadSignUp">Registrarse</button>
@@ -82,6 +83,9 @@
       },
       loadProducto: function (){
         this.$router.push({name:"producto"});
+      },
+      loadPedidos: function (){
+        this.$router.push({name:"pedidos"});
       }
     },
     created: function(){

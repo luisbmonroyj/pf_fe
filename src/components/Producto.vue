@@ -29,8 +29,6 @@
                 </td>
             </tr>
         </table>
-<<<<<<< HEAD
-=======
         <div class="Hacer pedido">
                     <button v-on:click="pedir">HACER PEDIDO</button>
         </div>
@@ -41,7 +39,6 @@
             <h2>Precio: <span>{{precio}} COP </span></h2>
             -->
         </div>
->>>>>>> ffa9a4f9cda26803b866dc6146bad5ef899852eb
     </div>
 </template>
 
@@ -49,7 +46,6 @@
 import jwt_decode from "jwt-decode";
 import axios from 'axios';
 
-<<<<<<< HEAD
 /*
 inicio+abriendo+id_producto+":"+cantidad
 si agrega otro elemento + siguiente
@@ -63,65 +59,38 @@ var cerrando="}]";
 var siguiente= "},"
 var contador = 0;
 */
-let jasonPedido = new Map();
 //var abriendo = '"productos_usuario": [{';
 //abriendo += jasonPedido.keys().to
-let productos = "";
+//let productos = "";
 let contador = 0;
 let inicio = '{"productos_usuario" : [';
 let abriendo = "{";
 let otro = "},\n";
 let productosMap = new Map();
-
+let jsonCrudo = inicio+abriendo;
+let otravariable;   
+            
 
 export default{
     name: "producto",
     data: function(){
         //jasonPedido.set(1,4)
-        console.log(jasonPedido.keys());
-        console.log(jasonPedido.values());
-        console.log(jasonPedido);
         return {
             nombre_producto: "",
             Presentacion: "",
             precio: 0,
             loaded: false, //linea 2
             id_producto: 1,
-            cantidad:1
+            cantidad:1,
+            id_usuario:null,
+            productos_usuario:null
         }
     },
     
     methods:{
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
-        confirmar: function(){
-            return alert("intentando el pedido");
-           /* axios.post(
-                "https://pf-app-api.herokuapp.com/cart/",
-                productos,
-                {headers: {}}
-            )
-                .then((result) => {
-                    alert ("Pedido creado")
-                    /*let dataSignUp = {
-                        username: this.user.username,
-                        token_access: result.data.access,
-                        token_refresh: result.data.refresh,
-                    }
-                    
-                    this.$emit('completedSignUp', dataSignUp)
-                })
-                .catch((error) => {
-                    console.log(error)
-                    alert("ERROR: Fallo en el pedido.");
-                });*/
-        
-        },
->>>>>>> 4f7e798d2f266f942831a2b583b7f6e153a2b131
         pedir: async function(){
-        //pedir: function(){
+            //pedir: function(){
+                let cont = 0;
             if (localStorage.getItem("token_access") === null || localStorage.getItem("token_refresh")=== null){
                 this.$emit('logOut');
                 return;
@@ -132,29 +101,54 @@ export default{
             axios.get(`https://pf-app-api.herokuapp.com/user/${userId}/`, 
                 {headers: {'Authorization': `Bearer ${token}`}})
             .then((result) => {
-                productos+='}],"id_usuario":'+ userId + '}';
-                //var obj = JSON.parse(productos);
-                
-
-                alert(productosMap);
-                confirmar();
-
                 this.loaded = true;
+                productosMap.forEach (function(value, key) {
+                    if (cont<productosMap.size-1){
+                        jsonCrudo += key + ' : ' + value+"},{";
+                    }
+                    else jsonCrudo += key + ' : ' + value+"}]";
+                    cont++;
+                })
+                jsonCrudo+=',"id_usuario":'+ userId + '}';
+                alert(jsonCrudo);
+                console.log(jsonCrudo);
+                otravariable = JSON.parse(jsonCrudo)
+                console.log(otravariable);
+                
+                axios.post("https://pf-app-api.herokuapp.com/cart/",
+                otravariable,
+                {headers: {}})
+                .then((result) => {
+                   alert ("Pedido creado")
 
-                /*
-                this.name = result.data.name;
-                this.email = result.data.email;
-                this.balance = result.data.acount.balance;
-                */
+               })
+                .catch(() => {
+                //this.$emit('logOut');
+                    alert("no pude crear el pedido");
+                });
             })
             .catch(() => {
             //    this.$emit('logOut');
                 alert("no pude crear el pedido");
             });
+        },
+        confirmar: function(otravariable){
+            console.log("Entramos a confimrar")
+            let productos = JSON.parse(jsonCrudo);
+            axios.post("https://pf-app-api.herokuapp.com/cart/",
+                otravariable,
+                {headers: {}})
+                .then((result) => {
+                   alert ("Pedido creado")
 
+               })
+                .catch(() => {
+                //this.$emit('logOut');
+                    alert("no pude crear el pedido");
+                });
         },
         verifyToken: function(){
-            return axios.post("https://bankbe-luis-app.herokuapp.com/refresh/",
+            return axios.post("https://pf-app-api.herokuapp.com/refresh/",
             {refresh: localStorage.getItem("token_refresh")},
             {headers:{ }})
             .then((result) => {
@@ -164,7 +158,9 @@ export default{
                 this.$emit('logOut');
             });
         },
+
         agregar: function(){
+            /*
             if(contador<1){
                 productos += inicio+abriendo+this.id_producto+":"+this.cantidad;
                 contador++;
@@ -173,16 +169,15 @@ export default{
                 productos+=otro+abriendo+this.id_producto+":"+this.cantidad;
                 contador++;
             }
-
-            productosMap.set(this.id_producto, this.cantidad);
-            let text = "";
-                
-                productosMap.forEach (function(value, key) {
-                text += key + ' = ' + value;
-                })
-                alert(text);
-
-            //alert(productos);
+            "productos_usuario": [
+                        {"1" : 4}, 
+                        {"2": 8}
+                        ],"id_usuario": 2 }
+            */
+            let strIdProd =   '"'+this.id_producto.toString()+'"';
+            productosMap.set(strIdProd, this.cantidad);
+            alert(" Producto agregado");
+            this.cantidad = 1;
             return;
         },
         anterior: function(){
@@ -196,7 +191,7 @@ export default{
             this.getData();
             return;
         },
->>>>>>> ffa9a4f9cda26803b866dc6146bad5ef899852eb
+
         getData: function(){
             //let id_producto = this.id_producto;//producto.dato;
             /*
