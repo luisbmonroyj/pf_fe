@@ -6,11 +6,11 @@
       <nav>
         <button v-on:click="loadProducto">Productos</button>
         <button v-if="!is_auth" v-on:click="loadLogIn">Entrar</button>
-        <button v-if="is_auth" v-on:click="loadPedidos">Pedidos</button>
         <button v-if="is_auth" v-on:click="loadHome">Inicio</button>
         <button v-if="is_auth" v-on:click="logOut">Cerrar Sesion</button>
         <button v-if="!is_auth" v-on:click="loadSignUp">Registrarse</button>
         <!--
+          <button v-if="is_auth" v-on:click="loadPedidos">Pedidos</button>
           <button v-if="is_auth">Inicio</button>
           <button v-if="is_auth">Cuenta</button>
           <button v-if="is_auth">Cerrar Sesion</button>
@@ -99,9 +99,9 @@
     margin: 0 0 0 0;
   }
   .header{
-  margin: 1% 0% 0% 0%;
-  padding: 100;
-  width: 100%;
+  margin: 1% 0% 10% 0%;
+  padding: auto;
+  width: 95%;
   height: 10vh;
   min-height: 100px;
   background-color: #f5b000 ;
@@ -145,8 +145,9 @@
   padding: 0%;
   background: #FDFEFE;
   }
+  /* superior xxx    xxx  izquierda*/
   .footer{
-  margin:0;
+  margin:0px 0px 100px px;
   padding:0;
   width: 100%;
   height: 10vh;

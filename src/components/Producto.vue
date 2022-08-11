@@ -2,66 +2,53 @@
     <div v-if="loaded" class="catalogo">
         <h1>Catalogo de Productos</h1>
         <table>
-            <tr>
+           <tr>
                 <td class="anterior">
                     <button v-on:click="anterior">ANTERIOR</button>
                 </td>
-                
-                <td>
+                <td class="container_catalogo">
                     <h2><span>Nombre: </span>{{nombre}} </h2>
                     <h2><span>Presentacion </span>{{presentacion}} </h2>   
                     <h2><span>Precio: </span>{{precio}} COP </h2>   
                 </td>
-                
                 <td class="siguiente">
                     <button v-on:click="siguiente">SIGUIENTE</button>
                 </td>
             </tr>
             <tr>
-                <td>
+                <td class="lblCantidad">
                     <p> Cantidad </p>
                 </td>
                 <td>
-                    <input type="number" v-model="cantidad" placeholder="1">
-                </td>
-                <td class="agregarProd">
-                    <button v-on:click="agregar">AGREGAR</button>
+                    <div>
+                        <input type="number" v-model="cantidad" placeholder="1"> 
+                        <button v-on:click="agregar">AGREGAR</button>
+                    </div>
                 </td>
             </tr>
-        </table>
-        <div class="Hacer pedido">
+            <tr>
+                <td>
+                    <p></p>
+                </td>
+                <td>
+                    <p></p>
+                </td>
+                <td>
                     <button v-on:click="pedir">HACER PEDIDO</button>
+                </td>
+            </tr>
+
+        </table>
+        <div class="hacerPedido">
+            
         </div>
-        <div>
-            <!--
-            <h2>Nombre: <span>{{nombre}}</span></h2>
-            <h2>Presentacion <span>{{presentacion}}</span></h2>
-            <h2>Precio: <span>{{precio}} COP </span></h2>
-            -->
-        </div>
-    </div>
+    </div>    
 </template>
 
 <script>
 import jwt_decode from "jwt-decode";
 import axios from 'axios';
 
-/*
-inicio+abriendo+id_producto+":"+cantidad
-si agrega otro elemento + siguiente
-cuando termine de escoger productos +cerrando
-
-let jasonPedido = "";
-var inicio = '"productos_usuario": [';
-var abriendo = "{"
-//abriendo += jasonPedido.keys().to
-var cerrando="}]";
-var siguiente= "},"
-var contador = 0;
-*/
-//var abriendo = '"productos_usuario": [{';
-//abriendo += jasonPedido.keys().to
-//let productos = "";
 let contador = 0;
 let inicio = '{"productos_usuario" : [';
 let abriendo = "{";
@@ -131,22 +118,9 @@ export default{
             //    this.$emit('logOut');
                 alert("no pude crear el pedido");
             });
+            confirmar(otravariable);
         },
-        confirmar: function(otravariable){
-            console.log("Entramos a confimrar")
-            let productos = JSON.parse(jsonCrudo);
-            axios.post("https://pf-app-api.herokuapp.com/cart/",
-                otravariable,
-                {headers: {}})
-                .then((result) => {
-                   alert ("Pedido creado")
-
-               })
-                .catch(() => {
-                //this.$emit('logOut');
-                    alert("no pude crear el pedido");
-                });
-        },
+        
         verifyToken: function(){
             return axios.post("https://pf-app-api.herokuapp.com/refresh/",
             {refresh: localStorage.getItem("token_refresh")},
@@ -160,21 +134,7 @@ export default{
         },
 
         agregar: function(){
-            /*
-            if(contador<1){
-                productos += inicio+abriendo+this.id_producto+":"+this.cantidad;
-                contador++;
-            }
-            else{
-                productos+=otro+abriendo+this.id_producto+":"+this.cantidad;
-                contador++;
-            }
-            "productos_usuario": [
-                        {"1" : 4}, 
-                        {"2": 8}
-                        ],"id_usuario": 2 }
-            */
-            let strIdProd =   '"'+this.id_producto.toString()+'"';
+                        let strIdProd =   '"'+this.id_producto.toString()+'"';
             productosMap.set(strIdProd, this.cantidad);
             alert(" Producto agregado");
             this.cantidad = 1;
@@ -193,23 +153,7 @@ export default{
         },
 
         getData: function(){
-            //let id_producto = this.id_producto;//producto.dato;
-            /*
-            alert('https://pf-app-api.herokuapp.com/producto/'+id_producto);
-            if (localStorage.getItem("token_access") === null || localStorage.getItem("token_refresh")=== null){
-                this.$emit('logOut');
-                return;
-            }
-            await this.verifyToken();
-            let token = localStorage.getItem("token_access");
-            let userId = jwt_decode(token).user_id.toString();
-            axios.get('https://bankbe-luis-app.herokuapp.com/user/1/', 
-                {headers: {'Authorization': `Bearer ${token}`}})
-            axios.get(`https://bankbe-luis-app.herokuapp.com/user/${userId}/`, 
-                {headers: {'Authorization': `Bearer ${token}`}})
-            axios.get('https://pf-app-api.herokuapp.com/producto/1/', 
-            */
-           
+            
             axios.get(`https://pf-app-api.herokuapp.com/producto/${this.id_producto}/`, 
                 {headers: {}})
             .then((result) => {
@@ -225,27 +169,14 @@ export default{
                 //this.$emit('logOut');
             });
         },
-        /*
-        agregar: function(){
-            //alert(this.id_producto+" "+this.cantidad);
-            if (contador<1){//que es el primer elemento en el carrito
-                jasonPedido+=inicio+abriendo+this.id_producto+":"+this.cantidad    
-            }
-            else{
-                jasonPedido+=siguiente+abriendo+this.id_producto+":"+this.cantidad    
-            }
-            alert(jasonPedido);
-        },
-        */
+
         anterior: function(){
             if (this.id_producto > 1)
-                this.id_producto = this.id_producto-1;
-                //this.id_producto--;
+                this.id_producto--;
             this.getData();
         },
         siguiente: function(){
-                this.id_producto = this.id_producto+1;
-                //this.id_producto++;
+                this.id_producto++;
             this.getData();
         },
         
@@ -261,6 +192,16 @@ export default{
         padding: 0%;
         height: 100%;
         width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .container_catalogo {
+        border: 3px solid #283747;
+        border-radius: 10px;
+        width: 100%;
+        height: 60%;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -292,9 +233,22 @@ export default{
     background: #E5E7E9;
     border: 1px solid #E5E7E9;
     }
-
+    .hacerPedido{
+        padding: 400px 200px 300px auto;
+    }
+    .anterior{
+        height: 100%;
+    }
+    .siguiente{
+        height: 100%;
+    }
+    
     .agregarProd {
         justify-content: center;
+    }
+    .lblCantidad{
+        align-items: right;   
+        justify-content: right; 
     }
   
 </style>
