@@ -27,7 +27,7 @@
         </router-view>
     </div>  
     <div class="footer">
-      <h2>Ningun derecho reservado 2022</h2>
+      <h2>Proyecto final Mision TIC 2022</h2>
     </div>
 
   </div>
